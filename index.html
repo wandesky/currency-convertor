@@ -1,28 +1,105 @@
-<!Doctype html>
+<!doctype html>
 <html>
     <head>
         <title>My Currency Convertor</title>
     </head>
+    <body>
 
-    <label for="amount">Enter amount:</label>
-    <input id="amount" name="currency" type="number" min="1" value="0.00"> <br>
+        <label class="input-group-text" for="fromSelect">From</label>
+        <select class="custom-select" id="fromSelect" name="">
+                        <option selected>Choose...</option>
+        </select>
 
-    <label for="currency_from">From:</label>
-    <select id="currency_from" class="currency_convert_from"></select>
+        <label class="input-group-text" for="toSelect">To</label>
 
-    <label for="currency_to">To:</label>
-    <select id="currency_to" class="currency_convert_to"></select>
+       <select class="custom-select" id="toSelect" name="">
+                        <option selected>Choose...</option>
+                        
+         </select>
 
-    <input id="convert_currency" type="submit" value="Convert Currency">
 
-    <br>
-    <!--
-    <label for="converted_currency">currency to be converted</label>\
-    
-    <input type="text" name="to_be_converted" id="currency_to_be_converted" width="100px"; disabled="false"></input>
-    -->
-    <label for="converted_currency">New amount</label>
-    <input type="text" name="converted_currency" id="converted_currency" width="100px"; disabled="true"></input>
-    
+          <label class="input-group-text" for="toConvert">Enter amount</label>
 
+          <input type="number" aria-label="toConvert" class="form-control col-4" id="toConvert" required>  
+
+          <a id="convert" class="align-self-center arrange">
+                 <img src="images/button2.png" class="compute" alt="Click this to perform conversion" style="width:20%;">
+                Click here</a>
+
+            <label class="input-group-text">Result =</label>
+
+                
+
+
+
+
+        <label class="input-group-text" for="toConvert">Enter amount</label>
+        <label for="amount">Enter amount:</label>
+        <input id="amount" name="currency" type="number" min="1" value="0.00"> <br>
+
+        <label for="currency_from">From:</label>
+        <select id="currency_from" class="currency_convert_from"></select>
+
+        <label for="currency_to">To:</label>
+        <select id="currency_to" class="currency_convert_to"></select>
+
+        <input id="convert_currency" type="submit" value="Convert Currency">
+
+        <br>
+        <!--
+        <label for="converted_currency">currency to be converted</label>\
+        
+        <input type="text" name="to_be_converted" id="currency_to_be_converted" width="100px"; disabled="false"></input>
+        -->
+        <label for="converted_currency">New amount</label>
+        <input type="text" name="converted_currency" id="converted_currency" width="100px"; disabled="true"></input>
+
+        
+    </body>
+
+    <script src="scripts/idb.js"></script>
+    <script src="scripts/free-converter.js"></script>
+    <script src="scripts/register-sw.js"></script>
+
+
+        <script>
+            let dropdown = document.getElementById('currency-to-dropdown');
+            let dropdown = document.getElementById('currency-from-dropdown');
+            dropdown.length = 0;
+
+            let defaultOption = document.createElement('option');
+            defaultOption.text = 'Choose State/Province';
+
+            dropdown.add(defaultOption);
+            dropdown.selectedIndex = 0;
+
+            const url = 'https://free.currencyconverterapi.com/api/v5/currencies';
+
+            fetch(url)  
+            .then(  
+                function(response) {  
+                if (response.status !== 200) {  
+                    console.warn('Looks like there was a problem. Status Code: ' + 
+                    response.status);  
+                    return;  
+                }
+
+                // Examine the text in the response  
+                response.json().then(function(data) {  
+                    let option;
+                
+                    for (let i = 0; i < data.length; i++) {
+                    option = document.createElement('option');
+                    option.text = data[i].name;
+                    option.value = data[i].abbreviation;
+                    dropdown.add(option);
+                    }    
+                });  
+                }  
+            )  
+            .catch(function(err) {  
+                console.error('Fetch Error -', err);  
+            });
+
+        </script>
 </html>
